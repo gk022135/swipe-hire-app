@@ -21,7 +21,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { formatSalary } from "@/utils/jobUtils";
+import { formatSalary, getCompanyInitials, getCompanyColorStyle } from "@/utils/jobUtils";
 import { Job } from "@/types/jobs";
 
 interface JobDetailsModalProps {
@@ -30,7 +30,7 @@ interface JobDetailsModalProps {
   onOpenChange: (open: boolean) => void;
   onApply: () => void;
   onSave: () => void;
-  readonly?: boolean; // ✅ keep as optional prop
+  readonly?: boolean;
 }
 
 const JobDetailsModal = ({
@@ -39,7 +39,7 @@ const JobDetailsModal = ({
   onOpenChange,
   onApply,
   onSave,
-  readonly, // ✅ properly destructured here
+  readonly,
 }: JobDetailsModalProps) => {
   if (!job) return null;
 
@@ -51,18 +51,32 @@ const JobDetailsModal = ({
             {/* Header */}
             <DialogHeader className="mb-6">
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-secondary flex items-center justify-center text-2xl sm:text-3xl font-bold text-primary shadow-glow flex-shrink-0">
+                {/* Company Logo or Initials */}
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-bold text-white shadow-glow flex-shrink-0 overflow-hidden">
                   {job.companyLogo ? (
                     <img
                       src={job.companyLogo}
                       alt={job.company}
                       className="w-full h-full object-cover rounded-2xl"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = "none";
+                        const fallback = target.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = "flex";
+                      }}
                     />
-                  ) : (
-                    job.company.charAt(0)
-                  )}
+                  ) : null}
+
+                  {/* Fallback initials */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center uppercase"
+                    style={getCompanyColorStyle(job.company)}
+                  >
+                    {getCompanyInitials(job.company)}
+                  </div>
                 </div>
 
+                {/* Title + Company Info */}
                 <div className="flex-1 min-w-0">
                   <DialogTitle className="text-xl sm:text-3xl mb-3 line-clamp-2 leading-tight text-left">
                     {job.title}
@@ -81,7 +95,7 @@ const JobDetailsModal = ({
               </div>
             </DialogHeader>
 
-            {/* Summary Info */}
+            {/* Job Info Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
               {[
                 {
@@ -153,7 +167,7 @@ const JobDetailsModal = ({
               </div>
             )}
 
-            {/* Full Description */}
+            {/* Role Details */}
             <div className="mb-6">
               <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base flex items-center gap-2">
                 <Layers className="h-4 w-4" />
@@ -198,7 +212,7 @@ const JobDetailsModal = ({
           </div>
         </ScrollArea>
 
-        {/* Bottom Buttons (Hidden in readonly mode) */}
+        {/* Bottom Buttons - hidden in readonly mode */}
         {!readonly && (
           <div className="flex gap-2 sm:gap-3 sticky bottom-0 bg-card/95 backdrop-blur-lg py-3 sm:py-4 px-4 sm:px-6 border-t rounded-b-2xl">
             <Button
