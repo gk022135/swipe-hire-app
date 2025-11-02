@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, Mail, Lock, User as UserIcon, Phone } from "lucide-react";
 import { toast } from "sonner";
 import logo from "@/assets/logo.png";
+import googleLogo from "@/assets/googlelogo.png"; // ✅ Add Google logo to your assets
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Map to your JSON schema → user_profile.basic_info
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -37,7 +37,6 @@ const Signup = () => {
       return;
     }
 
-    // Construct the initial user_profile object
     const userProfile = {
       user_id: crypto.randomUUID(),
       timestamp: new Date().toISOString(),
@@ -60,19 +59,11 @@ const Signup = () => {
       },
     };
 
-    // Example: send this to n8n or backend
     try {
       setLoading(true);
-      // Replace with your API endpoint or n8n webhook URL
-      // await fetch("https://n8n.yourdomain.com/webhook/signup", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ user_profile: userProfile }),
-      // });
-
       console.log("🧠 Signup Data:", userProfile);
       toast.success("Account created successfully!");
-      navigate("/onboarding"); // Move to next onboarding step
+      navigate("/onboarding");
     } catch (err) {
       toast.error("Signup failed. Try again.");
     } finally {
@@ -85,14 +76,14 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen gradient-subtle flex items-center justify-center px-5 py-10">
+    <div className="min-h-screen gradient-subtle flex items-center justify-center px-4 sm:px-5 py-8">
       <div className="w-full max-w-sm sm:max-w-md">
         {/* Header */}
-        <div className="text-center mb-8 animate-fade-in">
+        <div className="text-center mb-6 sm:mb-8 animate-fade-in">
           <img
             src={logo}
             alt="SwipeHire"
-            className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 drop-shadow-md"
+            className="w-14 h-14 sm:w-20 sm:h-20 mx-auto mb-4 drop-shadow-md"
           />
           <h1 className="text-2xl sm:text-3xl font-bold">Create your account</h1>
           <p className="text-sm sm:text-base text-muted-foreground mt-1">
@@ -101,7 +92,7 @@ const Signup = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-card/60 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-lg border border-border animate-fade-in-scale">
+        <div className="bg-card/60 backdrop-blur-md rounded-2xl p-5 sm:p-8 shadow-lg border border-border animate-fade-in-scale">
           <form onSubmit={handleSignup} className="space-y-5">
             {/* Full Name */}
             <div>
@@ -225,7 +216,7 @@ const Signup = () => {
             </div>
 
             {/* Terms */}
-            <div className="flex items-start gap-2 text-sm">
+            <div className="flex items-start gap-2 text-xs sm:text-sm">
               <Checkbox
                 id="terms"
                 checked={formData.accept_terms}
@@ -236,11 +227,11 @@ const Signup = () => {
               />
               <Label htmlFor="terms" className="leading-relaxed">
                 I agree to the{" "}
-                <Button variant="link" className="h-auto p-0 text-sm">
+                <Button variant="link" className="h-auto p-0 text-xs sm:text-sm">
                   Terms
                 </Button>{" "}
                 &{" "}
-                <Button variant="link" className="h-auto p-0 text-sm">
+                <Button variant="link" className="h-auto p-0 text-xs sm:text-sm">
                   Privacy Policy
                 </Button>
               </Label>
@@ -264,25 +255,17 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* OAuth */}
-          <div className="flex flex-col gap-3">
-            <Button
-              variant="outline"
-              onClick={() => handleOAuthSignup("Google")}
-              className="w-full"
-            >
-              Google
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => handleOAuthSignup("LinkedIn")}
-              className="w-full"
-            >
-              LinkedIn
-            </Button>
-          </div>
+          {/* Google Signup Only */}
+          <Button
+            variant="outline"
+            onClick={() => handleOAuthSignup("Google")}
+            className="w-full flex items-center justify-center gap-3 font-medium text-sm sm:text-base"
+          >
+            <img src={googleLogo} alt="Google" className="w-5 h-5" />
+            Continue with Google
+          </Button>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-xs sm:text-sm text-muted-foreground mt-6">
             Already have an account?{" "}
             <Button
               variant="link"
