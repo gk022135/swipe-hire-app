@@ -2,6 +2,9 @@
 
 **SwipeHire** is a modern, mobile-first job discovery platform that revolutionizes job hunting with a Tinder-like swiping interface. Users can swipe through curated job cards, match with opportunities intelligently, and apply seamlessly with AI-powered suggestions. Built with a sleek design, smooth animations, and smart features, SwipeHire makes the job search process effortless and engaging.
 
+<img width="1804" height="1012" alt="image" src="https://github.com/user-attachments/assets/655d1079-df57-4e0a-b068-c932cdb66517" />
+<img width="1148" height="912" alt="image" src="https://github.com/user-attachments/assets/f69c0866-d76d-42a2-adbe-27d9c5fdc5db" />
+
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/anirudhmishra/swipehire)
 
